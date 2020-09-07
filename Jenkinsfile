@@ -6,12 +6,6 @@ pipeline {
      }
 
      stages {
-         stage ('build'){
-             steps{
-             sh "${mvnHome}/bin/mvn clean install "
-          }
-         }
-
          stage( 'Build Docker Image'){
              steps{
                  sh "docker build -t agunuworld/nodeapp:v1 ."
