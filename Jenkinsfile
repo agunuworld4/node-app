@@ -8,10 +8,16 @@ pipeline {
      stages {
          stage( 'Build Docker Image'){
              steps{
-                 sh "docker build -t agunuworld/nodeapp:v1 ."
+                 sh "docker build -t agunuworld/nodeapp:${DOCKER_TAG} ."
              }
          }
-
+      
+      stage('Push Docker Image'){
+         withCredentials([string(credentialsId: 'dockerAuthenticationpublic', variable: 'dockerAuthenticationpublic')])  {
+          sh "docker login -u agunuworld -p ${dockerAuthenticationpublic}"
+        }
+        sh "docker push agunuworld/nodeapp:${DOCKER_TAG} "
+     }
     
 
      }
