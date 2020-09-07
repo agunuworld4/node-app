@@ -4,11 +4,11 @@ pipeline {
      environment{
           DOCKER_TAG = getDockerTag()
      }
-     
+
      stages {
          stage( 'Build Docker Image'){
              steps{
-                 sh "docker build -t agunuworld/nodeapp:v1"
+                 sh "docker build -t agunuworld/nodeapp:v1 ."
              }
          }
      }
