@@ -13,11 +13,13 @@ pipeline {
          }
       
       stage('Push Docker Image'){
-         withCredentials([string(credentialsId: 'dockerAuthenticationpublic', variable: 'dockerAuthenticationpublic')])  {
-          sh "docker login -u agunuworld -p ${dockerAuthenticationpublic}"
-        }
-        sh "docker push agunuworld/nodeapp:${DOCKER_TAG} "
-     }
+          steps{
+              withCredentials([string(credentialsId: 'dockerAuthenticationpublic', variable: 'dockerAuthenticationpublic')])  {
+              sh "docker login -u agunuworld -p ${dockerAuthenticationpublic}"
+           }
+          sh "docker push agunuworld/nodeapp:${DOCKER_TAG} "
+          }
+          }
     
 
      }
