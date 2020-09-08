@@ -20,8 +20,24 @@ pipeline {
           sh "docker push agunuworld/nodeapp:${DOCKER_TAG} "
           }
           }
-    
-
+       
+       stage('Deploy To Kubernetes'){
+           steps{
+               sh "chmod +x changeTag.sh"
+               sh "./changeTag.sh ${DOCKER_TAG}"
+               sshagent(['eksclimasternodes']) {
+               sh "scp -o StrictHostKeyChecking=no service.yml node-app-pod.yml ec2-user@3.135.209.242:/root/ec2-user/"
+               script{
+                   try{
+                       sh "ssh ec2-user@3.135.209.242 kubectl apply -f ."
+                   }catch(error){
+                       sh "ssh ec2-user@3.135.209.242 kubectl create -f ."
+                   }
+               }
+            }
+           }
+       }
+      
      }
 }
 
